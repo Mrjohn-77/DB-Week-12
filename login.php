@@ -11,12 +11,27 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
  // TODO 1: Query a single user by email using a prepared statement.
  // $sql = 'SELECT ... FROM users WHERE ... = ? LIMIT 1';
  // TODO 2: Use mysqli_stmt_bind_param / execute / bind_result / fetch.
+$sql = 'SELECT id, profile_id, password_hash FROM users WHERE email = ? LIMIT 1';
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, 's', $email);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $userId, $profileId, $hash);
+$found = mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
  // TODO 3: Verify plaintext password with password_verify($password, $hash).
  // TODO 4: On success, session_regenerate_id(true) and set session values:
  // $_SESSION['user_id'], $_SESSION['profile_id'], $_SESSION['email'].
  // TODO 5: Redirect to skills.php and exit.
- $error='TODO: complete login authentication first.';
- }
+if ($found && password_verify($password, $hash)) {
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = $userId;
+    $_SESSION['profile_id'] = $profileId;
+    $_SESSION['email'] = $email;
+    header('Location: skills.php');
+    exit;
+} 
+$error = 'Invalid email or password.'; 
+}
 }
 ?>
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login</title><link rel="stylesheet" href="assets/css/crud.css"></head><body><main class="wrap"><div class="panel"><h1>Resume Lab · Login</h1><p>PHP Session + MySQL Authentication</p>
