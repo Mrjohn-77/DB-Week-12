@@ -5,8 +5,8 @@
     --ink: #eaf2ff;          /* main text (light on dark) */
     --ink-soft: #c2cfea;     /* secondary text */
     --night: #071026;        /* dark text on bright buttons */
-    --glass: rgba(10, 18, 42, 0.70);
-    --glass-strong: rgba(10, 18, 42, 0.76);
+    --glass: #0c1530;
+    --glass-strong: #0e1834;
     --glass-border: rgba(160, 230, 255, 0.24);
     --holo: linear-gradient(100deg, #5effc1 0%, #38d7ff 35%, #a78bfa 70%, #ff7ac6 100%);
     --aurora: linear-gradient(100deg, #34f5a4 0%, #22d3ee 100%);
@@ -32,24 +32,28 @@ body {
 body::before {
     content: '';
     position: fixed;
-    inset: -15%;
+    inset: -25%;
     z-index: -2;
     pointer-events: none;
     background:
-        /* aurora curtains: green / cyan (main) */
-        radial-gradient(22% 55% at 22% 30%, rgba(52, 245, 164, 0.85) 0%, transparent 70%),
-        radial-gradient(18% 60% at 38% 22%, rgba(34, 211, 238, 0.80) 0%, transparent 70%),
-        radial-gradient(20% 50% at 55% 35%, rgba(45, 255, 196, 0.65) 0%, transparent 70%),
-        radial-gradient(24% 55% at 70% 25%, rgba(56, 189, 248, 0.70) 0%, transparent 70%),
-        /* rainbow accents */
-        radial-gradient(26% 34% at 88% 12%, rgba(139, 92, 246, 0.75) 0%, transparent 70%),
-        radial-gradient(24% 32% at 98% 55%, rgba(255, 79, 168, 0.60) 0%, transparent 70%),
-        radial-gradient(26% 30% at 6% 8%,   rgba(255, 106, 61, 0.55) 0%, transparent 70%),
-        radial-gradient(22% 26% at 14% 88%, rgba(255, 201, 60, 0.40) 0%, transparent 70%),
-        radial-gradient(30% 30% at 60% 92%, rgba(124, 77, 255, 0.50) 0%, transparent 70%),
-        /* night sky base */
-        linear-gradient(170deg, #071026 0%, #0a1a35 45%, #120d33 100%);
-    filter: blur(28px) saturate(1.3);
+        /* green-cyan aurora glow (main light) */
+        radial-gradient(60% 40% at 35% 30%, rgba(52, 245, 164, 0.55) 0%, rgba(34, 211, 238, 0.30) 45%, transparent 75%),
+        /* one smooth rainbow band across the sky: colors melt into each other */
+        linear-gradient(118deg,
+            transparent 12%,
+            rgba(255, 95, 140, 0.55) 22%,
+            rgba(255, 150, 90, 0.55) 29%,
+            rgba(255, 215, 90, 0.55) 35%,
+            rgba(120, 245, 140, 0.65) 42%,
+            rgba(52, 245, 190, 0.70) 49%,
+            rgba(34, 211, 238, 0.70) 56%,
+            rgba(70, 150, 255, 0.62) 63%,
+            rgba(150, 105, 255, 0.58) 70%,
+            rgba(220, 100, 255, 0.45) 77%,
+            transparent 88%),
+        /* night sky */
+        linear-gradient(170deg, #061024 0%, #0a1834 50%, #120c32 100%);
+    filter: blur(60px) saturate(1.2);
     animation: aura-drift 22s ease-in-out infinite alternate;
 }
 
@@ -271,4 +275,146 @@ footer {
     .card { padding: 22px; border-radius: 18px; }
     .skill-badge { flex: 1 1 45%; }
     .container { margin: 24px auto; }
+}
+
+/* ---------- Motion + glitter stars ---------- */
+/* aurora flows more visibly */
+body::before { animation: aura-flow 18s ease-in-out infinite alternate; }
+@keyframes aura-flow {
+    0%   { transform: translate(0, 0) scale(1) rotate(0deg);         filter: blur(60px) saturate(1.20) hue-rotate(0deg); }
+    33%  { transform: translate(-4%, 2%) scale(1.06) rotate(-6deg);  filter: blur(62px) saturate(1.30) hue-rotate(10deg); }
+    66%  { transform: translate(4%, -3%) scale(1.10) rotate(5deg);   filter: blur(62px) saturate(1.35) hue-rotate(-10deg); }
+    100% { transform: translate(-2%, -4%) scale(1.05) rotate(-3deg); filter: blur(60px) saturate(1.25) hue-rotate(6deg); }
+}
+/* sun rays sway slowly */
+body::after { inset: 0 -12%; animation: rays-sway 16s ease-in-out infinite alternate; }
+@keyframes rays-sway {
+    0%   { transform: translateX(-4%) skewX(-2deg); opacity: 0.7; }
+    100% { transform: translateX(4%) skewX(2deg);   opacity: 1; }
+}
+
+/* two star layers that twinkle out of step and float upward */
+html::before,
+html::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+html::before {
+    background-image:
+        radial-gradient(circle, #ffffff 0 1.4px, rgba(255, 255, 255, 0.45) 2.2px, transparent 4px),
+        radial-gradient(circle, rgba(94, 255, 193, 1) 0 1.3px, rgba(94, 255, 193, 0.4) 2.2px, transparent 4px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.8px),
+        radial-gradient(circle, rgba(255, 230, 150, 0.95) 0 1.1px, transparent 2px);
+    background-size: 173px 197px, 241px 229px, 157px 263px, 211px 139px;
+    background-position: 13px 41px, 87px 11px, 51px 67px, 101px 89px;
+    animation: twinkle-a 3.2s ease-in-out infinite alternate, drift-a 60s linear infinite;
+}
+html::after {
+    background-image:
+        radial-gradient(circle, rgba(56, 215, 255, 1) 0 1.4px, rgba(56, 215, 255, 0.4) 2.4px, transparent 4px),
+        radial-gradient(circle, rgba(255, 122, 198, 1) 0 1.2px, rgba(255, 122, 198, 0.4) 2.2px, transparent 4px),
+        radial-gradient(circle, #ffffff 0 1.8px, rgba(255, 255, 255, 0.5) 2.8px, transparent 6px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.8px);
+    background-size: 211px 163px, 283px 251px, 331px 307px, 193px 277px;
+    background-position: 71px 23px, 139px 97px, 29px 181px, 43px 7px;
+    animation: twinkle-b 2.3s ease-in-out infinite alternate, drift-b 80s linear infinite;
+}
+@keyframes twinkle-a { 0% { opacity: 0.15; } 50% { opacity: 1; } 100% { opacity: 0.35; } }
+@keyframes twinkle-b { 0% { opacity: 1; } 50% { opacity: 0.1; } 100% { opacity: 0.9; } }
+/* each layer moves exactly one tile height, so the loop is seamless */
+@keyframes drift-a { to { background-position: 13px -156px, 87px -218px, 51px -196px, 101px -50px; } }
+@keyframes drift-b { to { background-position: 71px -140px, 139px -154px, 29px -126px, 43px -270px; } }
+
+@media (prefers-reduced-motion: reduce) {
+    body::before, body::after, html::before, html::after { animation: none; }
+}
+
+/* ---------- Sparkle only on photo frame and headings ---------- */
+@property --ring {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+.avatar {
+    background: conic-gradient(from var(--ring), #34f5a4, #22d3ee, #38bdf8, #a26bff, #ff5fb4, #ff7a52, #ffc94a, #a6f05a, #34f5a4);
+    animation: ring-spin 6s linear infinite, ring-glow 2.6s ease-in-out infinite alternate;
+}
+@keyframes ring-spin { to { --ring: 360deg; } }
+@keyframes ring-glow {
+    0%   { box-shadow: 0 0 18px rgba(52, 245, 164, 0.35), 0 0 50px rgba(34, 211, 238, 0.18); }
+    100% { box-shadow: 0 0 32px rgba(52, 245, 164, 0.65), 0 0 80px rgba(162, 107, 255, 0.35); }
+}
+
+/* name: a light glint sweeps across */
+h1 {
+    background: linear-gradient(100deg, #eaf2ff 0%, #eaf2ff 40%, #ffffff 48%, #b9fff0 50%, #ffffff 52%, #eaf2ff 60%, #eaf2ff 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glint 5s ease-in-out infinite;
+}
+@keyframes glint { 0%, 60% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+
+/* section headings: rainbow flows + tiny twinkling sparkles at the end */
+h2 {
+    background-size: 150% 100%;
+    animation: holo-flow 6s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 6px rgba(56, 215, 255, 0.35));
+}
+h2::after { background-size: 150% 100%; animation: holo-flow 6s ease-in-out infinite alternate; }
+@keyframes holo-flow { from { background-position: 0% 0; } to { background-position: 100% 0; } }
+h2::before {
+    content: '';
+    position: absolute;
+    top: -6px; right: -22px;
+    width: 18px; height: 18px;
+    background:
+        radial-gradient(circle, #ffffff 0 1.5px, rgba(255, 255, 255, 0.4) 2.5px, transparent 5px) 0 0 / 9px 9px no-repeat,
+        radial-gradient(circle, #5effc1 0 1.2px, transparent 3px) 10px 8px / 8px 8px no-repeat,
+        radial-gradient(circle, #ff7ac6 0 1px, transparent 2.5px) 3px 12px / 6px 6px no-repeat;
+    animation: sparkle 1.8s ease-in-out infinite alternate;
+}
+@keyframes sparkle {
+    0%   { opacity: 0.2; transform: scale(0.7) rotate(0deg); }
+    100% { opacity: 1;   transform: scale(1.15) rotate(20deg); }
+}
+
+/* ---------- Click: soft shine sweep on text boxes ---------- */
+.item, .skill-badge, section.card > p {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+section.card > p { border-radius: 12px; padding: 6px 8px; margin: -6px -8px; }
+.item::after, .skill-badge::after, section.card > p::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.28) 45%, rgba(185, 255, 240, 0.35) 50%, rgba(255, 255, 255, 0.28) 55%, transparent 70%),
+        radial-gradient(circle at 20% 35%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2.5px),
+        radial-gradient(circle at 62% 70%, rgba(94, 255, 193, 0.9) 0 1px, transparent 2.5px),
+        radial-gradient(circle at 85% 25%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2.5px);
+    background-size: 300% 100%, 100% 100%, 100% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: 130% 0, 0 0, 0 0, 0 0;
+    opacity: 0;
+    /* on release: the shine travels across and fades out */
+    transition: background-position 0.9s ease-out, opacity 0.9s ease-out;
+}
+.item:active::after, .skill-badge:active::after, section.card > p:active::after {
+    /* on press: jump to start instantly */
+    background-position: -30% 0, 0 0, 0 0, 0 0;
+    opacity: 1;
+    transition: none;
+}
+.item:active, .skill-badge:active { transform: scale(0.985); }
+
+@media (prefers-reduced-motion: reduce) {
+    .avatar, h1, h2, h2::before, h2::after { animation: none; }
 }
