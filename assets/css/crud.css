@@ -5,7 +5,7 @@
     --ink: #eaf2ff;
     --ink-soft: #c2cfea;
     --night: #071026;
-    --glass: #0c1530;
+    --glass: rgba(10, 18, 42, 0.74);
     --glass-border: rgba(160, 230, 255, 0.24);
     --holo: linear-gradient(100deg, #5effc1 0%, #38d7ff 35%, #a78bfa 70%, #ff7ac6 100%);
     --aurora: linear-gradient(100deg, #34f5a4 0%, #22d3ee 100%);
@@ -28,51 +28,13 @@ body {
 body::before {
     content: '';
     position: fixed;
-    inset: -25%;
+    inset: 0;
     z-index: -2;
     pointer-events: none;
-    background:
-        /* green-cyan aurora glow (main light) */
-        radial-gradient(60% 40% at 35% 30%, rgba(52, 245, 164, 0.55) 0%, rgba(34, 211, 238, 0.30) 45%, transparent 75%),
-        /* one smooth rainbow band across the sky: colors melt into each other */
-        linear-gradient(118deg,
-            transparent 12%,
-            rgba(255, 95, 140, 0.55) 22%,
-            rgba(255, 150, 90, 0.55) 29%,
-            rgba(255, 215, 90, 0.55) 35%,
-            rgba(120, 245, 140, 0.65) 42%,
-            rgba(52, 245, 190, 0.70) 49%,
-            rgba(34, 211, 238, 0.70) 56%,
-            rgba(70, 150, 255, 0.62) 63%,
-            rgba(150, 105, 255, 0.58) 70%,
-            rgba(220, 100, 255, 0.45) 77%,
-            transparent 88%),
-        /* night sky */
-        linear-gradient(170deg, #061024 0%, #0a1834 50%, #120c32 100%);
-    filter: blur(60px) saturate(1.2);
-    animation: aura-drift 22s ease-in-out infinite alternate;
+    /* pre-rendered aurora animation (colors in soft layers, like the reference GIF) */
+    background: #071026 url('../images/aurora.gif') center / cover no-repeat;
 }
-body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-        radial-gradient(55% 70% at -10% 30%, rgba(255, 245, 210, 0.38) 0%, rgba(255, 235, 190, 0.14) 32%, transparent 65%),
-        repeating-linear-gradient(106deg,
-            rgba(255, 255, 255, 0) 0px,
-            rgba(255, 255, 255, 0) 60px,
-            rgba(255, 250, 225, 0.22) 105px,
-            rgba(255, 255, 255, 0) 150px,
-            rgba(255, 255, 255, 0) 210px,
-            rgba(255, 248, 220, 0.14) 240px,
-            rgba(255, 255, 255, 0) 275px,
-            rgba(255, 255, 255, 0) 360px);
-    -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.1) 85%, transparent 100%);
-            mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.1) 85%, transparent 100%);
-    mix-blend-mode: screen;
-}
+body::after { content: none; }
 @keyframes aura-drift {
     0%   { transform: scale(1) rotate(0deg);    filter: blur(30px) saturate(1.25) hue-rotate(0deg); }
     100% { transform: scale(1.08) rotate(4deg); filter: blur(34px) saturate(1.35) hue-rotate(18deg); }
@@ -202,15 +164,15 @@ td a:hover { text-decoration: underline; }
 
 /* ---------- Motion + glitter stars ---------- */
 /* aurora flows more visibly */
-body::before { animation: aura-flow 18s ease-in-out infinite alternate; }
+
 @keyframes aura-flow {
-    0%   { transform: translate(0, 0) scale(1) rotate(0deg);         filter: blur(60px) saturate(1.20) hue-rotate(0deg); }
-    33%  { transform: translate(-4%, 2%) scale(1.06) rotate(-6deg);  filter: blur(62px) saturate(1.30) hue-rotate(10deg); }
-    66%  { transform: translate(4%, -3%) scale(1.10) rotate(5deg);   filter: blur(62px) saturate(1.35) hue-rotate(-10deg); }
-    100% { transform: translate(-2%, -4%) scale(1.05) rotate(-3deg); filter: blur(60px) saturate(1.25) hue-rotate(6deg); }
+    0%   { transform: translate(0, 0) scale(1) rotate(0deg);          filter: blur(28px) saturate(1.30) hue-rotate(0deg); }
+    33%  { transform: translate(-3%, 2%) scale(1.06) rotate(2deg);    filter: blur(30px) saturate(1.40) hue-rotate(12deg); }
+    66%  { transform: translate(3%, -2%) scale(1.10) rotate(-2deg);   filter: blur(30px) saturate(1.45) hue-rotate(25deg); }
+    100% { transform: translate(-2%, -3%) scale(1.04) rotate(3deg);   filter: blur(28px) saturate(1.35) hue-rotate(-15deg); }
 }
 /* sun rays sway slowly */
-body::after { inset: 0 -12%; animation: rays-sway 16s ease-in-out infinite alternate; }
+
 @keyframes rays-sway {
     0%   { transform: translateX(-4%) skewX(-2deg); opacity: 0.7; }
     100% { transform: translateX(4%) skewX(2deg);   opacity: 1; }
@@ -231,7 +193,7 @@ html::before {
         radial-gradient(circle, rgba(94, 255, 193, 1) 0 1.3px, rgba(94, 255, 193, 0.4) 2.2px, transparent 4px),
         radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.8px),
         radial-gradient(circle, rgba(255, 230, 150, 0.95) 0 1.1px, transparent 2px);
-    background-size: 173px 197px, 241px 229px, 157px 263px, 211px 139px;
+    background-size: 173px 197px, 241px 229px, 97px 113px, 139px 151px;
     background-position: 13px 41px, 87px 11px, 51px 67px, 101px 89px;
     animation: twinkle-a 3.2s ease-in-out infinite alternate, drift-a 60s linear infinite;
 }
@@ -241,25 +203,28 @@ html::after {
         radial-gradient(circle, rgba(255, 122, 198, 1) 0 1.2px, rgba(255, 122, 198, 0.4) 2.2px, transparent 4px),
         radial-gradient(circle, #ffffff 0 1.8px, rgba(255, 255, 255, 0.5) 2.8px, transparent 6px),
         radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.8px);
-    background-size: 211px 163px, 283px 251px, 331px 307px, 193px 277px;
+    background-size: 211px 163px, 283px 251px, 331px 307px, 127px 109px;
     background-position: 71px 23px, 139px 97px, 29px 181px, 43px 7px;
     animation: twinkle-b 2.3s ease-in-out infinite alternate, drift-b 80s linear infinite;
 }
 @keyframes twinkle-a { 0% { opacity: 0.15; } 50% { opacity: 1; } 100% { opacity: 0.35; } }
 @keyframes twinkle-b { 0% { opacity: 1; } 50% { opacity: 0.1; } 100% { opacity: 0.9; } }
 /* each layer moves exactly one tile height, so the loop is seamless */
-@keyframes drift-a { to { background-position: 13px -156px, 87px -218px, 51px -196px, 101px -50px; } }
-@keyframes drift-b { to { background-position: 71px -140px, 139px -154px, 29px -126px, 43px -270px; } }
+@keyframes drift-a { to { background-position: 13px -156px, 87px -218px, 51px -46px, 101px -62px; } }
+@keyframes drift-b { to { background-position: 71px -140px, 139px -154px, 29px -126px, 43px -102px; } }
 
 @media (prefers-reduced-motion: reduce) {
     body::before, body::after, html::before, html::after { animation: none; }
 }
 
-/* ---------- Heading shimmer ---------- */
-h1 {
-    background-size: 150% 100%;
-    animation: holo-flow 6s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 6px rgba(56, 215, 255, 0.35));
+/* ---------- Text boxes: solid, so nothing behind affects the text ---------- */
+table {
+    background: #13203f;
+    border-radius: 14px;
+    overflow: hidden;
 }
-@keyframes holo-flow { from { background-position: 0% 0; } to { background-position: 100% 0; } }
-@media (prefers-reduced-motion: reduce) { h1 { animation: none; } }
+tr:hover td { background: #172647; }
+input, select { background: #13203f; }
+.alert { background: #2b2615; }
+.ok  { background: #10302a; }
+.err { background: #351726; }
